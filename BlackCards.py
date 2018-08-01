@@ -13,7 +13,9 @@ class BlackCardsDeck(object):
     def __init__(self, game):
         self._game = game
         self._deck = [
-            BlackCard("Morgan", lambda: self._game.add_siege_engine(2)),
+            BlackCard("Morgan_1", lambda: self._game.add_siege_engine(2)),
+            BlackCard("Despair", lambda: self._game.add_despair()),
+            BlackCard("Desolation", lambda: self._game.add_desolation()),
             BlackCard("Excalibur", lambda: self._game.move_excalibur_toward_defeat()),
             BlackCard("Excalibur", lambda: self._game.move_excalibur_toward_defeat()),
             BlackCard("Excalibur", lambda: self._game.move_excalibur_toward_defeat()),
@@ -41,7 +43,7 @@ class BlackCardsDeck(object):
         for c in self._deck:
             if c.name == card_name:
                 return c
-            
+
     def get_discarded_card_by_name(self, card_name):
         for c in self._discard:
             if c.name == card_name:

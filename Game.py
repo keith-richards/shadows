@@ -83,10 +83,10 @@ class Game(object):
     def add_siege_engine(self, num=1):
         self._num_siege_engines += num
 
-    def knight_loose_life_point(self, knight=None):
+    def knight_loose_life_point(self, knight=None, num=1):
         if knight is None:
             knight = self.get_current_player()
-        self._knights[knight.name].loose_life_point()
+        self._knights[knight.name].loose_life_point(num)
 
     def knight_gain_life_point(self, knight=None):
         if knight is None:
@@ -95,6 +95,12 @@ class Game(object):
 
     def move_excalibur_toward_defeat(self):
         self._excalibur_quest.move_toward_defeat()
+
+    def add_despair(self):
+        self._holy_grail_quest.add_despair()
+
+    def add_desolation(self):
+        self._holy_grail_quest.add_desolation()
 
     def add_knight_to_excalibur(self, knight=None):
         if knight == None:

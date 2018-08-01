@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../")
 import unittest
 
 import shadows
@@ -16,18 +18,23 @@ class TestProgressEvil(unittest.TestCase):
         self.game.add_knight(self.tristan)
         self.game.add_knight(self.galahad)
         self.knight = self.game.get_current_player()
-        
+
     def test_loose_life_point(self):
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.TAKE_LIFE_POINT))
+        self.assertEqual(self.arthur._current_life, 3)
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.TAKE_LIFE_POINT))
+        self.assertEqual(self.arthur._current_life, 2)
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.TAKE_LIFE_POINT))
+        self.assertEqual(self.arthur._current_life, 1)
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.TAKE_LIFE_POINT))
+        self.assertEqual(self.arthur._current_life, 0)
         self.assertFalse(self.game.get_current_player().alive())
-        
+
     def test_siege_engine(self):
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.ADD_SIEGE_ENGINE))
         self.assertEqual(self.game._num_siege_engines, 1)
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.ADD_SIEGE_ENGINE))
+        self.assertEqual(self.game._num_siege_engines, 2)
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.ADD_SIEGE_ENGINE))
         self.assertEqual(self.game._num_siege_engines, 3)
 

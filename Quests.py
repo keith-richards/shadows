@@ -30,13 +30,13 @@ class Quest(object):
             self.loose()
             return True
         return False
-    
+
     def quest_won(self):
         if self._quest_won():
             self.win()
             return True
         return False
-    
+
     def reset(self):
         raise NotImplementedError()
     def _quest_won(self):
@@ -49,7 +49,7 @@ class HolyGrailQuest(Quest):
         super().__init__(game)
         self._grail_cards = 0
         self._despair_cards = 0
-        self._max_kingths = 6
+        self._max_knights = 6
 
     def loose(self):
         super().loose()
@@ -117,7 +117,7 @@ class ExcaliburQuest(Quest):
         for knight in self._present_knights:
             knight.gain_life_point()
         # TODO share cards
-        
+
     def move_toward_defeat(self):
         if self.active:
             self._current_location -= 1
@@ -138,4 +138,3 @@ class ExcaliburQuest(Quest):
         if not self.active:
             return False
         return self._current_location <= self._loose_location
-
