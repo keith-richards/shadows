@@ -7,6 +7,24 @@ from shadows.Game import *
 from shadows.Knight import *
 from shadows.CoatOfArms import *
 from shadows.Quests import *
+from shadows.Cards import *
+
+class TestBlackKnightQuest(unittest.TestCase):
+    def setUp(self):
+        self.game = Game()
+        self.quest = self.game._black_knight_quest
+        self.arthur = Knight(CoatOfArms.ARTHUR)
+        self.game.add_knight(self.arthur)
+        self.game.add_knight_to_black_knight(self.arthur)
+
+    def test_can_add_pair_a(self):
+        self.assertTrue(self.quest._can_add_pair_a(1))
+        self.assertTrue(self.quest._can_add_pair_a(2))
+        self.assertTrue(self.quest._can_add_pair_a(3))
+        self.assertTrue(self.quest._can_add_pair_a(4))
+        self.assertTrue(self.quest._can_add_pair_a(5))
+        # self.assertTrue(self.quest.add_fight_card(5))
+        # todo
 
 class TestExcaliburQuest(unittest.TestCase):
     def setUp(self):
@@ -16,8 +34,8 @@ class TestExcaliburQuest(unittest.TestCase):
         self.game.add_knight(self.arthur)
         self.game.add_knight_to_excalibur(self.arthur)
 
-    def test_loose(self):
-        self.quest.loose()
+    def test_lose(self):
+        self.quest.lose()
         self.assertFalse(self.quest.active)
 
     def test_win(self):
@@ -86,9 +104,118 @@ class TestExcaliburQuest(unittest.TestCase):
         self.assertTrue(self.quest.quest_won())
         self.assertFalse(self.quest.active)
 
+
+class TestSaxonQuest(unittest.TestCase):
+    def setUp(self):
+        self.game = Game()
+        self.quest = self.game._saxon_quest
+        self.arthur = Knight(CoatOfArms.ARTHUR)
+        self.game.add_knight(self.arthur)
+        self.game.add_knight_to_saxon(self.arthur)
+
+    def test_lose(self):
+        self.quest.lose()
+        self.assertTrue(self.quest.active)
+
+    def test_win(self):
+        self.quest.win()
+        self.assertTrue(self.quest.active)
+        self.assertEqual(self.game._num_siege_engines, 0)
+        self.assertEqual(self.game._num_white_swords, 1)
+
+    def test_can_add_knight(self):
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertFalse(self.quest.can_add_knight())
+
+    def test_add_knight(self):
+        self.assertEqual(len(self.quest._present_knights), 1)
+
+    def test_quest_lost(self):
+        self.quest.add_saxon()
+        self.assertFalse(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.quest.add_saxon()
+        self.assertFalse(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.quest.add_saxon()
+        self.assertFalse(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.quest.add_saxon()
+        self.assertTrue(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.assertTrue(self.quest.active)
+        self.assertEqual(self.game._num_black_swords, 1)
+        self.assertEqual(self.game._num_siege_engines, 2)
+        self.assertEqual(self.arthur._current_life, 3)
+
     def test_reset(self):
-        with self.assertRaises(NotImplementedError):
-            self.quest.reset()
+        self.quest.reset()
+        self.assertTrue(self.quest.active)
+
+class TestPictQuest(unittest.TestCase):
+    def setUp(self):
+        self.game = Game()
+        self.quest = self.game._pict_quest
+        self.arthur = Knight(CoatOfArms.ARTHUR)
+        self.game.add_knight(self.arthur)
+        self.game.add_knight_to_pict(self.arthur)
+
+    def test_lose(self):
+        self.quest.lose()
+        self.assertTrue(self.quest.active)
+
+    def test_win(self):
+        self.quest.win()
+        self.assertTrue(self.quest.active)
+        self.assertEqual(self.game._num_siege_engines, 0)
+        self.assertEqual(self.game._num_white_swords, 1)
+
+    def test_can_add_knight(self):
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertTrue(self.quest.can_add_knight())
+        self.quest.add_knight(self.arthur)
+        self.assertFalse(self.quest.can_add_knight())
+
+    def test_add_knight(self):
+        self.assertEqual(len(self.quest._present_knights), 1)
+
+    def test_quest_lost(self):
+        self.quest.add_pict()
+        self.assertFalse(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.quest.add_pict()
+        self.assertFalse(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.quest.add_pict()
+        self.assertFalse(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.quest.add_pict()
+        self.assertTrue(self.quest.quest_lost())
+        self.assertFalse(self.quest.quest_won())
+        self.assertTrue(self.quest.active)
+        self.assertEqual(self.game._num_black_swords, 1)
+        self.assertEqual(self.game._num_siege_engines, 2)
+        self.assertEqual(self.arthur._current_life, 3)
+
+    def test_reset(self):
+        self.quest.reset()
+        self.assertTrue(self.quest.active)
 
 class TestHolyGrailQuest(unittest.TestCase):
     def setUp(self):
@@ -98,8 +225,8 @@ class TestHolyGrailQuest(unittest.TestCase):
         self.game.add_knight(self.arthur)
         self.game.add_knight_to_holy_grail(self.arthur)
 
-    def test_loose(self):
-        self.quest.loose()
+    def test_lose(self):
+        self.quest.lose()
         self.assertFalse(self.quest.active)
 
     def test_win(self):

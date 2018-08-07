@@ -1,6 +1,6 @@
 from shadows.Knight import *
 from shadows.ProgressEvil import *
-from shadows.BlackCards import *
+from shadows.Cards import *
 from shadows.Quests import *
 
 class Game(object):
@@ -14,6 +14,10 @@ class Game(object):
         self._black_cards.shuffle_all()
         self._excalibur_quest = ExcaliburQuest(self)
         self._holy_grail_quest = HolyGrailQuest(self)
+        self._pict_quest = PictQuest(self)
+        self._saxon_quest = SaxonQuest(self)
+        self._black_knight_quest = BlackKnightQuest(self)
+        self._merlins_allowed = True
 
     def game_lost(self):
         if self._num_siege_engines >= 12:
@@ -73,20 +77,32 @@ class Game(object):
         if knight is None:
             knight = self.get_current_player()
         if evil_action == ProgressEvilChoice.TAKE_LIFE_POINT:
-            self.knight_loose_life_point(knight)
+            self.knight_lose_life_point(knight)
         elif evil_action == ProgressEvilChoice.ADD_SIEGE_ENGINE:
             self.add_siege_engine()
         elif evil_action == ProgressEvilChoice.DRAW_BLACK_CARD:
             return self.draw_black_card()
         return None
 
+    def lost_quests_add_extra_black(self):
+        self._excalibur_quest.add_extra_black()
+        self._pict_quest.add_extra_black()
+        self._saxon_quest.add_extra_black()
+        self._holy_grail_quest.add_extra_black()
+
+    def disallow_merlins(self):
+        self._merlins_allowed = False
+
+    def allow_merlins(self):
+        self._merlins_allowed = True
+
     def add_siege_engine(self, num=1):
         self._num_siege_engines += num
 
-    def knight_loose_life_point(self, knight=None, num=1):
+    def knight_lose_life_point(self, knight=None, num=1):
         if knight is None:
             knight = self.get_current_player()
-        self._knights[knight.name].loose_life_point(num)
+        self._knights[knight.name].lose_life_point(num)
 
     def knight_gain_life_point(self, knight=None):
         if knight is None:
@@ -102,6 +118,18 @@ class Game(object):
     def add_desolation(self):
         self._holy_grail_quest.add_desolation()
 
+    def add_pict(self):
+        self._pict_quest.add_pict()
+
+    def add_fight_card_pict(self, fight_card):
+        self._pict_quest.add_fight_card(fight_card)
+
+    def add_fight_card_saxon(self, fight_card):
+        self._saxon_quest.add_fight_card(fight_card)
+
+    def add_saxon(self):
+        self._saxon_quest.add_saxon()
+
     def add_knight_to_excalibur(self, knight=None):
         if knight == None:
             knight = self.get_current_player()
@@ -113,3 +141,21 @@ class Game(object):
             knight = self.get_current_player()
         if self._holy_grail_quest.can_add_knight():
             self._holy_grail_quest.add_knight(knight)
+
+    def add_knight_to_pict(self, knight=None):
+        if knight == None:
+            knight = self.get_current_player()
+        if self._pict_quest.can_add_knight():
+            self._pict_quest.add_knight(knight)
+
+    def add_knight_to_saxon(self, knight=None):
+        if knight == None:
+            knight = self.get_current_player()
+        if self._saxon_quest.can_add_knight():
+            self._saxon_quest.add_knight(knight)
+
+    def add_knight_to_black_knight(self, knight=None):
+        if knight == None:
+            knight = self.get_current_player()
+        if self._black_knight_quest.can_add_knight():
+            self._black_knight_quest.add_knight(knight)

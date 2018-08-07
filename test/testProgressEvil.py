@@ -19,7 +19,7 @@ class TestProgressEvil(unittest.TestCase):
         self.game.add_knight(self.galahad)
         self.knight = self.game.get_current_player()
 
-    def test_loose_life_point(self):
+    def test_lose_life_point(self):
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.TAKE_LIFE_POINT))
         self.assertEqual(self.arthur._current_life, 3)
         self.assertIsNone(self.game.progress_evil(ProgressEvilChoice.TAKE_LIFE_POINT))

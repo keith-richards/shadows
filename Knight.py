@@ -13,7 +13,7 @@ class Knight(object):
     def alive(self):
         return self._current_life > 0
 
-    def loose_life_point(self, num=1):
+    def lose_life_point(self, num=1):
         self._current_life -= num
         self._current_life = max(self._current_life, self._min_life)
 

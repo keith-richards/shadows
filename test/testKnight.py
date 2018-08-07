@@ -17,17 +17,17 @@ class TestKnight(unittest.TestCase):
         self.game.add_knight(self.tristan)
         self.game.add_knight(self.galahad)
 
-    def test_loose_life_point(self):
-        self.arthur.loose_life_point()
+    def test_lose_life_point(self):
+        self.arthur.lose_life_point()
         self.assertTrue(self.arthur.alive())
-        self.arthur.loose_life_point()
+        self.arthur.lose_life_point()
         self.assertTrue(self.arthur.alive())
-        self.arthur.loose_life_point()
+        self.arthur.lose_life_point()
         self.assertTrue(self.arthur.alive())
-        self.arthur.loose_life_point()
+        self.arthur.lose_life_point()
         self.assertFalse(self.arthur.alive())
         self.assertEqual(self.arthur._current_life, 0)
-        self.arthur.loose_life_point()
+        self.arthur.lose_life_point()
         self.assertEqual(self.arthur._current_life, 0)
 
     def test_gain_life_point(self):
